@@ -22,3 +22,7 @@ CREATE TABLE sharedvisits (
 );
 
 INSERT INTO userinfo (userID,username,password) VALUES (0,"root","password");
+INSERT INTO userinfo (userID,username,password) VALUES (1,"John","7894");
+
+
+
