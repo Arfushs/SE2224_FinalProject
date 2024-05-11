@@ -1,10 +1,25 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+import java.sql.*;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        String url = "jdbc:mysql://127.0.0.1:3306/project";
+        try {
+            Connection conn = DriverManager.getConnection(url,"root","C856500n.");
 
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM userinfo");
+
+            while(resultSet.next())
+            {
+                System.out.println("USER ID:" + resultSet.getInt("userID"));
+                System.out.println("USERNAME:" + resultSet.getString("username"));
+                System.out.println("PASSWORD:" + resultSet.getString("password"));
+            }
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
