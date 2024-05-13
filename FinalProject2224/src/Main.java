@@ -26,9 +26,13 @@ public class Main {
 
         DataBaseManager database = new DataBaseManager(databaseURL,"root","12345678");
         //database.AddNewVisit("Sheldon","Turkey","Izmir","Summer","Foods","!!",5);
-        database.DeleteVisit(0);
+        //database.DeleteVisit(0);
+
+
 
     }
+
+
 
 
 

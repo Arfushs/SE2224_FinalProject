@@ -23,6 +23,17 @@ CREATE TABLE sharedvisits (
 
 INSERT INTO userinfo (userID,username,password) VALUES (0,"root","password");
 INSERT INTO userinfo (userID,username,password) VALUES (1,"John","7894");
+insert into visits(visitID,username,country_name,city_name,season,feature,comment,rating)
+ values(0,"Sheldon","Turkey","Izmir","Summer","Food","Great City!!",5);
+ insert into visits(visitID,username,country_name,city_name,season,feature,comment,rating)
+ values(1,"Sheldon","Turkey","Manisa","Winter","History","Great City!!",4);
+ insert into visits(visitID,username,country_name,city_name,season,feature,comment,rating)
+ values(2,"Sheldon","Turkey","Istanbul","Summer","Food","Great City!!",5);
+ insert into visits(visitID,username,country_name,city_name,season,feature,comment,rating)
+ values(3,"Sheldon","Turkey","Edirne","Spring","Food","Great City!!",5);
+ 
+select * from visits
+s
 
 
 
