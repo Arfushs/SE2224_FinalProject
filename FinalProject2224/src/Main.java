@@ -2,7 +2,7 @@ import java.sql.*;
 
 public class Main {
 
-    static String databaseURL = "jdbc:mysql://127.0.0.1:3306/project";
+    static String databaseURL = "jdbc:mysql://localhost:3306/project";
 
     public static void main(String[] args) {
 
@@ -24,8 +24,9 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-        DataBaseManager database = new DataBaseManager(databaseURL);
-
+        DataBaseManager database = new DataBaseManager(databaseURL,"root","12345678");
+        //database.AddNewVisit("Sheldon","Turkey","Izmir","Summer","Foods","!!",5);
+        database.DeleteVisit(0);
 
     }
 
