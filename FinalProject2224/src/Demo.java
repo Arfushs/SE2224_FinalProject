@@ -43,6 +43,11 @@ public class Demo extends JFrame{
             DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
             model.setColumnIdentifiers(names);
 
+            // Önceki rowları temizlemek için
+            for(int i = 0; i < cols; i++)
+                if(model.getRowCount() >0)
+                    model.removeRow(0);
+
             String username,country_name,city_name,season,feature,comment;
             int visitID,rate;
             while(resultSet.next())
