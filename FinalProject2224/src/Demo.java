@@ -27,6 +27,7 @@ public class Demo extends JFrame{
     private JList bestFoodList;
     private JButton displayImageButton;
     private JTextField visitIdTextField;
+    private JLabel ImageLabel;
 
 
     public Demo() {
@@ -64,6 +65,28 @@ public class Demo extends JFrame{
                 JOptionPane.showMessageDialog(null, "The visit has been deleted. (Visit ID: " +id+")");
                 UpdateTables();
 
+            }
+        });
+        displayImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int id = Integer.parseInt(visitIdTextField.getText());
+                String country_name = dataBaseManager.GetCountryNameByID(id);
+                System.out.println(country_name);
+                ImageIcon icon;
+                if(country_name.equals("England"))
+                    icon = new ImageIcon("Images/Location4.jpg");
+                else if(country_name.equals("Turkey"))
+                    icon = new ImageIcon("Images/Location3.jpg");
+                else if(country_name.equals("Italy"))
+                    icon = new ImageIcon("Images/Location2.jpg");
+                else if(country_name.equals("Japan"))
+                    icon = new ImageIcon("Images/Location1.jpg");
+                else if(country_name.equals("America"))
+                    icon = new ImageIcon("Images/Location5.jpg");
+                else icon = new ImageIcon("Images/question.jpg");
+
+                ImageLabel.setIcon(icon);
             }
         });
     }
@@ -137,6 +160,8 @@ public class Demo extends JFrame{
         ShowBestFoodsList();
     }
 
+
+
     public static void main(String[] args) {
 
         dataBaseManager = new DataBaseManager(databaseURL,databaseUser,databasePass);
@@ -144,10 +169,13 @@ public class Demo extends JFrame{
         Demo demo = new Demo();
         demo.setTitle("Project");
         demo.setContentPane(demo.mainPanel);
-        demo.setSize(800,500);
+        demo.setSize(800,600);
         demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         demo.setVisible(true);
         demo.UpdateTables();
+
+
+
 
     }
 

@@ -88,5 +88,23 @@ public class DataBaseManager {
         return countryList;
     }
 
+    public String GetCountryNameByID(int visitID)
+    {
+        String countryName = "";
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            Statement statement = conn.createStatement();
+            String visitIDQuery = "select country_name from visits where visitID = " + visitID;
+            ResultSet resultSet = statement.executeQuery(visitIDQuery);
+            countryName = resultSet.next() ? resultSet.getString("country_name") : null;
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return countryName;
+    }
+
 
 }
