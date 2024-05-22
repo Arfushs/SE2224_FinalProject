@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.List;
 
 public class Demo extends JFrame{
     static String databaseURL = "jdbc:mysql://127.0.0.1:3306/project";
@@ -11,11 +12,10 @@ public class Demo extends JFrame{
     static DataBaseManager dataBaseManager;
 
     private JPanel mainPanel;
-    private JButton tableButton;
+    //private JButton tableButton;
     private JTable dataTable;
     private JButton addLocationButton;
     private JTextField countryTextField;
-    private JLabel countryLabel;
     private JTextField cityTextField;
     private JTextField yearTextField;
     private JTextField seasonTextField;
@@ -24,15 +24,18 @@ public class Demo extends JFrame{
     private JTextField ratingTextField;
     private JButton deleteVisitButton;
     private JTextField deleteWVITextField;
+    private JList bestFoodList;
+    private JButton displayImageButton;
+    private JTextField visitIdTextField;
 
 
     public Demo() {
-        tableButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ShowTable();
-            }
-        });
+//        tableButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                ShowTable();
+//            }
+//        });
         addLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -42,11 +45,11 @@ public class Demo extends JFrame{
                         yearTextField.getText().length() > 0;
 
                 if (b) {
-                    String Username = "", Country = countryTextField.getText(), City = cityTextField.getText(), Year = yearTextField.getText(),
+                    String Username = "Can", Country = countryTextField.getText(), City = cityTextField.getText(), Year = yearTextField.getText(),
                             Season = seasonTextField.getText(), BestFeature = bestFeatureTextField.getText(), Comment = commentTextField.getText(),
                     Rating = ratingTextField.getText();
                     dataBaseManager.AddNewVisit(Username,Country,City,Integer.valueOf(Year),Season,BestFeature,Comment,Integer.valueOf(Rating));
-                    ShowTable();
+                    UpdateTables();
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter all the fields..");
                 }
@@ -59,7 +62,7 @@ public class Demo extends JFrame{
                 int id = Integer.parseInt(deleteWVITextField.getText());
                 dataBaseManager.DeleteVisit(id);
                 JOptionPane.showMessageDialog(null, "The visit has been deleted. (Visit ID: " +id+")");
-                ShowTable();
+                UpdateTables();
 
             }
         });
@@ -114,6 +117,26 @@ public class Demo extends JFrame{
 
     }
 
+    public void ShowBestFoodsList()
+    {
+        DefaultListModel<String> myListModel = new DefaultListModel<>();
+        List<String> countryList = dataBaseManager.GetBestFoodsByRating();
+        int i = 1;
+        for(String country : countryList)
+        {
+            myListModel.addElement(i+". "+country);
+            i++;
+        }
+
+        bestFoodList.setModel(myListModel);
+    }
+
+    public void UpdateTables()
+    {
+        ShowTable();
+        ShowBestFoodsList();
+    }
+
     public static void main(String[] args) {
 
         dataBaseManager = new DataBaseManager(databaseURL,databaseUser,databasePass);
@@ -121,9 +144,11 @@ public class Demo extends JFrame{
         Demo demo = new Demo();
         demo.setTitle("Project");
         demo.setContentPane(demo.mainPanel);
-        demo.setSize(600,500);
+        demo.setSize(800,500);
         demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         demo.setVisible(true);
+        demo.UpdateTables();
+
     }
 
 }
