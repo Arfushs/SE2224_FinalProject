@@ -28,6 +28,9 @@ public class Demo extends JFrame{
     private JButton displayImageButton;
     private JTextField visitIdTextField;
     private JLabel ImageLabel;
+    private JButton displayVisitsButton;
+    private JTextField visitYearTextField;
+    private JList visitYearList;
 
 
     public Demo() {
@@ -87,6 +90,21 @@ public class Demo extends JFrame{
                 else icon = new ImageIcon("Images/question.jpg");
 
                 ImageLabel.setIcon(icon);
+            }
+        });
+        displayVisitsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int year = Integer.parseInt(visitYearTextField.getText());
+                DefaultListModel<String> myListModel = new DefaultListModel<>();
+                List<String> dataList = dataBaseManager.GetVisitInfoByYear(year);
+                int i = 1;
+                for(String data : dataList)
+                {
+                    myListModel.addElement(i+") "+data);
+                    i++;
+                }
+                visitYearList.setModel(myListModel);
             }
         });
     }
@@ -173,6 +191,7 @@ public class Demo extends JFrame{
         demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         demo.setVisible(true);
         demo.UpdateTables();
+
 
 
 

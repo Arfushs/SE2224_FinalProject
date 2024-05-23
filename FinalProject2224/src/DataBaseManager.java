@@ -106,5 +106,36 @@ public class DataBaseManager {
         return countryName;
     }
 
+    public List<String> GetVisitInfoByYear(int year)
+    {
+        List<String> st = new ArrayList<>();
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            PreparedStatement statement = conn.prepareStatement("select * from visits where year_visited = " + year);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+            {
+                String data = "";
+                data += resultSet.getString("visitID");
+                data += ", " + resultSet.getString("username");
+                data += ", " + resultSet.getString("country_name");
+                data += ", " + resultSet.getString("city_name");
+                data += ", " + resultSet.getInt("year_visited");
+                data += ", " + resultSet.getString("season");
+                data += ", " + resultSet.getString("feature");
+                data += ", " + resultSet.getString("comment");
+                data += ", " + resultSet.getInt("rating");
+                st.add(data);
+            }
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return st;
+
+    }
+
 
 }
