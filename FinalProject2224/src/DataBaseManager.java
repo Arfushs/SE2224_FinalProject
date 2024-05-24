@@ -137,5 +137,74 @@ public class DataBaseManager {
 
     }
 
+    public List<String> GetMostVisitedCountry()
+    {
+        List<String> st = new ArrayList<>();
+
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            PreparedStatement statement = conn.prepareStatement("SELECT country_name, COUNT(*) AS visit_count\n" +
+                    "FROM visits\n" +
+                    "GROUP BY country_name\n" +
+                    "HAVING COUNT(*) = (\n" +
+                    "    SELECT MAX(visit_count)\n" +
+                    "    FROM (\n" +
+                    "        SELECT COUNT(*) AS visit_count\n" +
+                    "        FROM visits\n" +
+                    "        GROUP BY country_name\n" +
+                    "    ) AS country_visits\n" +
+                    ");");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                st.add(resultSet.getString("country_name"));
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return st;
+    }
+
+    public List<String> GetVisitedCountryOnlySpring()
+    {
+        List<String> st = new ArrayList<>();
+
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            PreparedStatement statement = conn.prepareStatement("SELECT country_name\n" +
+                    "FROM visits\n" +
+                    "GROUP BY country_name\n" +
+                    "HAVING SUM(CASE WHEN season = 'spring' THEN 1 ELSE 0 END) > 0\n" +
+                    "   AND SUM(CASE WHEN season <> 'spring' THEN 1 ELSE 0 END) = 0;\n");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                st.add(resultSet.getString("country_name"));
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return st;
+    }
+
+    public void ShareVisitIDWithFriend(String username,String friendsUsername,int visitID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            PreparedStatement preparedStatement = conn.prepareStatement("insert into sharedvisits(shared_visitID,username,friend_username) values(?,?,?)");
+            preparedStatement.setInt(1, visitID);
+            preparedStatement.setString(2, username);
+            preparedStatement.setString(3, friendsUsername);
+            preparedStatement.executeUpdate();
+            System.out.println("VisitID Shared with : " + friendsUsername);
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
 }

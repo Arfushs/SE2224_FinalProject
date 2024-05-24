@@ -9,6 +9,7 @@ public class Demo extends JFrame{
     static String databaseURL = "jdbc:mysql://127.0.0.1:3306/project";
     static String databaseUser = "root";
     static String databasePass = "C856500n.";
+    static String Username = "Can";
     static DataBaseManager dataBaseManager;
 
     private JPanel mainPanel;
@@ -31,6 +32,11 @@ public class Demo extends JFrame{
     private JButton displayVisitsButton;
     private JTextField visitYearTextField;
     private JList visitYearList;
+    private JList mvcList;
+    private JList vosList;
+    private JButton shareVisitIDButton;
+    private JTextField shareVisitTextField;
+    private JTextField friendsUNTextField;
 
 
     public Demo() {
@@ -49,7 +55,7 @@ public class Demo extends JFrame{
                         yearTextField.getText().length() > 0;
 
                 if (b) {
-                    String Username = "Can", Country = countryTextField.getText(), City = cityTextField.getText(), Year = yearTextField.getText(),
+                    String Country = countryTextField.getText(), City = cityTextField.getText(), Year = yearTextField.getText(),
                             Season = seasonTextField.getText(), BestFeature = bestFeatureTextField.getText(), Comment = commentTextField.getText(),
                     Rating = ratingTextField.getText();
                     dataBaseManager.AddNewVisit(Username,Country,City,Integer.valueOf(Year),Season,BestFeature,Comment,Integer.valueOf(Rating));
@@ -105,6 +111,15 @@ public class Demo extends JFrame{
                     i++;
                 }
                 visitYearList.setModel(myListModel);
+            }
+        });
+        shareVisitIDButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int visitId = Integer.parseInt(shareVisitTextField.getText());
+                String friend_username = friendsUNTextField.getText();
+                dataBaseManager.ShareVisitIDWithFriend(Username,friend_username,visitId);
+                JOptionPane.showMessageDialog(null, "This visit has been shared (Visit ID: " +visitId+") with " + friend_username );
             }
         });
     }
@@ -172,10 +187,38 @@ public class Demo extends JFrame{
         bestFoodList.setModel(myListModel);
     }
 
+    public void ShowMostVisitedCountry()
+    {
+        DefaultListModel<String> myListModel = new DefaultListModel<>();
+        List<String> countryList = dataBaseManager.GetMostVisitedCountry();
+        for(String country : countryList)
+        {
+            myListModel.addElement("- "+country);
+
+        }
+
+        mvcList.setModel(myListModel);
+    }
+
+    public void ShowVisitedCountryOnlySpring()
+    {
+        DefaultListModel<String> myListModel = new DefaultListModel<>();
+        List<String> countryList = dataBaseManager.GetVisitedCountryOnlySpring();
+        for(String country : countryList)
+        {
+            myListModel.addElement("- "+country);
+
+        }
+
+        vosList.setModel(myListModel);
+    }
+
     public void UpdateTables()
     {
         ShowTable();
         ShowBestFoodsList();
+        ShowMostVisitedCountry();
+        ShowVisitedCountryOnlySpring();
     }
 
 
@@ -187,12 +230,10 @@ public class Demo extends JFrame{
         Demo demo = new Demo();
         demo.setTitle("Project");
         demo.setContentPane(demo.mainPanel);
-        demo.setSize(800,600);
+        demo.setSize(800,850);
         demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         demo.setVisible(true);
         demo.UpdateTables();
-
-
 
 
 
