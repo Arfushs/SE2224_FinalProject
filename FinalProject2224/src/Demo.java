@@ -37,6 +37,9 @@ public class Demo extends JFrame{
     private JButton shareVisitIDButton;
     private JTextField shareVisitTextField;
     private JTextField friendsUNTextField;
+    private JButton sharedWithMeButton;
+    private JTextField swmFriendsTextField;
+    private JList sharedWMList;
 
 
     public Demo() {
@@ -120,6 +123,19 @@ public class Demo extends JFrame{
                 String friend_username = friendsUNTextField.getText();
                 dataBaseManager.ShareVisitIDWithFriend(Username,friend_username,visitId);
                 JOptionPane.showMessageDialog(null, "This visit has been shared (Visit ID: " +visitId+") with " + friend_username );
+            }
+        });
+        sharedWithMeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String friendUsername = swmFriendsTextField.getText();
+                DefaultListModel<String> myListModel = new DefaultListModel<>();
+                List<String> dataList = dataBaseManager.SharedWithMe(Username,friendUsername);
+                for(String data : dataList)
+                {
+                    myListModel.addElement("- "+data);
+                }
+                sharedWMList.setModel(myListModel);
             }
         });
     }
@@ -222,7 +238,6 @@ public class Demo extends JFrame{
     }
 
 
-
     public static void main(String[] args) {
 
         dataBaseManager = new DataBaseManager(databaseURL,databaseUser,databasePass);
@@ -234,7 +249,6 @@ public class Demo extends JFrame{
         demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         demo.setVisible(true);
         demo.UpdateTables();
-
 
 
     }

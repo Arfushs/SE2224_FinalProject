@@ -206,5 +206,36 @@ public class DataBaseManager {
         }
     }
 
+    public List<String> SharedWithMe(String username,String friendsUsername)
+    {
+        List<String> st = new ArrayList<>();
+
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            PreparedStatement statement = conn.prepareStatement("SELECT country_name, city_name, season, feature "
+                    + "FROM visits "
+                    + "WHERE visitID IN (SELECT shared_visitID FROM sharedvisits WHERE username = ? AND friend_username = ?)");
+            statement.setString(1, friendsUsername);
+            statement.setString(2, username);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+            {
+                String data = "";
+                data += resultSet.getString("country_name");
+                data += ", " + resultSet.getString("city_name");
+                data += ", " + resultSet.getString("season");
+                data += ", " + resultSet.getString("feature");
+                st.add(data);
+
+            }
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return st;
+    }
+
 
 }
