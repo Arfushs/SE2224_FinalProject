@@ -1,6 +1,5 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DataBaseManager {
 
@@ -238,4 +237,30 @@ public class DataBaseManager {
     }
 
 
+    public boolean CheckLogin(String username, String password)
+    {
+        HashMap<String, String> dictionary = new HashMap<String, String>();;
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            PreparedStatement statement = conn.prepareStatement("SELECT username,password from userinfo");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+            {
+                //System.out.println(resultSet.getString("username") +" " + resultSet.getString("password"));
+               dictionary.put(resultSet.getString("username"), resultSet.getString("password"));
+
+            }
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        if (dictionary.containsKey(username))
+            if(dictionary.get(username).equals(password))
+                return true;
+
+        return false;
+    }
 }

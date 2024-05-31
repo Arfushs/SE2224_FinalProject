@@ -6,10 +6,7 @@ import java.sql.*;
 import java.util.List;
 
 public class Demo extends JFrame{
-    static String databaseURL = "jdbc:mysql://127.0.0.1:3306/project";
-    static String databaseUser = "root";
-    static String databasePass = "C856500n.";
-    static String Username = "Can";
+
     static DataBaseManager dataBaseManager;
 
     private JPanel mainPanel;
@@ -49,6 +46,10 @@ public class Demo extends JFrame{
 //                ShowTable();
 //            }
 //        });
+        setContentPane(mainPanel);
+        dataBaseManager = new DataBaseManager(DatabaseSingleton.databaseURL,DatabaseSingleton.databaseUser,DatabaseSingleton.databasePass);
+        UpdateTables();
+
         addLocationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -61,7 +62,7 @@ public class Demo extends JFrame{
                     String Country = countryTextField.getText(), City = cityTextField.getText(), Year = yearTextField.getText(),
                             Season = seasonTextField.getText(), BestFeature = bestFeatureTextField.getText(), Comment = commentTextField.getText(),
                     Rating = ratingTextField.getText();
-                    dataBaseManager.AddNewVisit(Username,Country,City,Integer.valueOf(Year),Season,BestFeature,Comment,Integer.valueOf(Rating));
+                    dataBaseManager.AddNewVisit(DatabaseSingleton.Username,Country,City,Integer.valueOf(Year),Season,BestFeature,Comment,Integer.valueOf(Rating));
                     UpdateTables();
                 } else {
                     JOptionPane.showMessageDialog(null, "Please enter all the fields..");
@@ -121,7 +122,7 @@ public class Demo extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 int visitId = Integer.parseInt(shareVisitTextField.getText());
                 String friend_username = friendsUNTextField.getText();
-                dataBaseManager.ShareVisitIDWithFriend(Username,friend_username,visitId);
+                dataBaseManager.ShareVisitIDWithFriend(DatabaseSingleton.Username,friend_username,visitId);
                 JOptionPane.showMessageDialog(null, "This visit has been shared (Visit ID: " +visitId+") with " + friend_username );
             }
         });
@@ -130,7 +131,7 @@ public class Demo extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String friendUsername = swmFriendsTextField.getText();
                 DefaultListModel<String> myListModel = new DefaultListModel<>();
-                List<String> dataList = dataBaseManager.SharedWithMe(Username,friendUsername);
+                List<String> dataList = dataBaseManager.SharedWithMe(DatabaseSingleton.Username,friendUsername);
                 for(String data : dataList)
                 {
                     myListModel.addElement("- "+data);
@@ -143,7 +144,7 @@ public class Demo extends JFrame{
     public void ShowTable()
     {
         try {
-            Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
+            Connection conn = DriverManager.getConnection(DatabaseSingleton.databaseURL,DatabaseSingleton.databaseUser,DatabaseSingleton.databasePass);
             Statement statement = conn.createStatement();
             String query = "select * from visits";
             ResultSet resultSet = statement.executeQuery(query);
@@ -240,15 +241,12 @@ public class Demo extends JFrame{
 
     public static void main(String[] args) {
 
-        dataBaseManager = new DataBaseManager(databaseURL,databaseUser,databasePass);
-
         Demo demo = new Demo();
         demo.setTitle("Project");
-        demo.setContentPane(demo.mainPanel);
+        //demo.setContentPane(demo.mainPanel);
         demo.setSize(800,850);
         demo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         demo.setVisible(true);
-        demo.UpdateTables();
 
 
     }
