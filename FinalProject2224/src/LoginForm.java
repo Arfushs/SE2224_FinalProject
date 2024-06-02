@@ -19,7 +19,7 @@ public class LoginForm extends JFrame {
 
                 String username = usernameField.getText();
                 String password = String.valueOf(passwordField1.getPassword());
-                System.out.println(password);
+                //System.out.println(password);
                 if(dataBaseManager.CheckLogin(username,password))
                 {
                     DatabaseSingleton.Username = username;

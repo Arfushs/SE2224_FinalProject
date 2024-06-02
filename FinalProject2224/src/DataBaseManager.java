@@ -188,6 +188,7 @@ public class DataBaseManager {
         return st;
     }
 
+
     public void ShareVisitIDWithFriend(String username,String friendsUsername,int visitID)
     {
         try {
@@ -247,7 +248,7 @@ public class DataBaseManager {
             while (resultSet.next())
             {
                 //System.out.println(resultSet.getString("username") +" " + resultSet.getString("password"));
-               dictionary.put(resultSet.getString("username"), resultSet.getString("password"));
+                dictionary.put(resultSet.getString("username"), resultSet.getString("password"));
 
             }
 
