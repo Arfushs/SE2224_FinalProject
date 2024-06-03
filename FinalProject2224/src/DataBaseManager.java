@@ -237,10 +237,33 @@ public class DataBaseManager {
         return st;
     }
 
+    public void UpdateTable(List<String> values) {
+        try {
+            Connection conn = DriverManager.getConnection(databaseURL, databaseUser, databasePass);
+            Statement statement = conn.createStatement();
 
-    public boolean CheckLogin(String username, String password)
+            String query = "UPDATE visits SET "
+                    + "country_name = '" + values.get(2) + "', "
+                    + "city_name = '" + values.get(3) + "', "
+                    + "year_visited = '" + values.get(4) + "', "
+                    + "season = '" + values.get(5) + "', "
+                    + "feature = '" + values.get(6) + "', "
+                    + "comment = '" + values.get(7) + "', "
+                    + "rating = '" + values.get(8) + "', "
+                    + "username = '" + values.get(1) + "' "
+                    + "WHERE visitID = '" + values.get(0) + "'";
+            statement.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+
+        public boolean CheckLogin(String username, String password)
     {
-        HashMap<String, String> dictionary = new HashMap<String, String>();;
+        HashMap<String, String> dictionary = new HashMap<String, String>();
         try {
             Connection conn = DriverManager.getConnection(databaseURL,databaseUser,databasePass);
             PreparedStatement statement = conn.prepareStatement("SELECT username,password from userinfo");

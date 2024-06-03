@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Demo extends JFrame{
@@ -37,6 +38,7 @@ public class Demo extends JFrame{
     private JButton sharedWithMeButton;
     private JTextField swmFriendsTextField;
     private JList sharedWMList;
+    private JButton UpdateTestButton;
 
 
     public Demo() {
@@ -139,6 +141,12 @@ public class Demo extends JFrame{
                 sharedWMList.setModel(myListModel);
             }
         });
+        UpdateTestButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpdateDataTable();
+            }
+        });
     }
 
     public void ShowTable()
@@ -236,6 +244,24 @@ public class Demo extends JFrame{
         ShowBestFoodsList();
         ShowMostVisitedCountry();
         ShowVisitedCountryOnlySpring();
+    }
+
+    private void UpdateDataTable() {
+
+        DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            List<String> rowData = new ArrayList<>();
+            for (int j = 0; j < model.getColumnCount(); j++) {
+                //rowData[i] = (String) model.getValueAt(i, j);
+                rowData.add(model.getValueAt(i, j).toString());
+                //System.out.println(rowData[i]);
+            }
+
+            dataBaseManager.UpdateTable(rowData);
+        }
+
     }
 
 
