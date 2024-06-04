@@ -1,3 +1,6 @@
+CREATE SCHEMA project;
+USE project;
+
 CREATE TABLE userinfo (
 	userID int,
     username varchar(20),
