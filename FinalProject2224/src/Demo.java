@@ -145,6 +145,7 @@ public class Demo extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 UpdateDataTable();
+                UpdateTables();
             }
         });
     }
